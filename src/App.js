@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import React from "react";
+import { WeatherTypes } from "./components/Constants";
 
 const Api_key = "4fffedfe2d7b05fd10607b0a8babc2d5";
 
@@ -7,44 +8,9 @@ const App = () => {
   const inputRef = useRef(null);
   const [apiData, setApiData] = useState(null);
   const [showWeather, setShowWeather] = useState(null);
-
   const [loading, setLoading] = useState(false);
 
-  const WeatherTypes = [
-    {
-      type: "Clear",
-      img: "https://cdn-icons-png.flaticon.com/512/6974/6974833.png",
-    },
-    {
-      type: "Rain",
-      img: "https://cdn-icons-png.flaticon.com/512/3351/3351979.png",
-    },
-    {
-      type: "Snow",
-      img: "https://cdn-icons-png.flaticon.com/512/642/642102.png",
-    },
-    {
-      type: "Clouds",
-      img: "https://cdn-icons-png.flaticon.com/512/414/414825.png",
-    },
-    {
-      type: "Haze",
-      img: "https://cdn-icons-png.flaticon.com/512/1197/1197102.png",
-    },
-    {
-      type: "Smoke",
-      img: "https://cdn-icons-png.flaticon.com/512/4380/4380458.png",
-    },
-    {
-      type: "Mist",
-      img: "https://cdn-icons-png.flaticon.com/512/4005/4005901.png",
-    },
-    {
-      type: "Drizzle",
-      img: "https://cdn-icons-png.flaticon.com/512/3076/3076129.png",
-    },
-  ];
-
+  //restAPI
   const fetchWeather = async () => {
     const URL = `https://api.openweathermap.org/data/2.5/weather?q=${inputRef.current.value}&units=metric&appid=${Api_key}`;
     setLoading(true);
@@ -61,6 +27,7 @@ const App = () => {
             },
           ]);
         }
+        // set for type and image of weathers
         setShowWeather(
           WeatherTypes.filter(
             (Weather) => Weather.type === data.weather[0].main
@@ -79,7 +46,7 @@ const App = () => {
   return (
     <div className="bg-gray-800 h-screen grid place-items-center">
       <div className="bg-white w-96 p-4 rounded-md">
-        <div className="flex item-center justify-between">
+        <div className="flex item-center justify-between gap-4">
           <input
             type="text"
             ref={inputRef}
@@ -132,7 +99,8 @@ const App = () => {
                         className="h-9 mt-1"
                       />
                       <h2 className="text-4xl font-extrabold">
-                        {apiData?.main?.temp}&#176;C
+                        {Math.round(apiData?.main?.temp)}
+                        &#176;C
                       </h2>
                     </div>
                   </>
